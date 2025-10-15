@@ -47,7 +47,6 @@ class MainWindow(QMainWindow):
         self.open_button.clicked.connect(self.open_video_file)
 
     def open_video_file(self):
-        """Opens a file dialog to select a video file."""
         filepath, _ = QFileDialog.getOpenFileName(
             self,
             "Open Video File",
