@@ -49,24 +49,20 @@ class AnalysisEngine(QObject):
         try:
             landmark_list = landmarks.landmark
             
-            # Get landmarks for both arms to handle either side
             right_shoulder = landmark_list[mp_pose.PoseLandmark.RIGHT_SHOULDER.value]
             right_elbow = landmark_list[mp_pose.PoseLandmark.RIGHT_ELBOW.value]
             right_wrist = landmark_list[mp_pose.PoseLandmark.RIGHT_WRIST.value]
             right_hip = landmark_list[mp_pose.PoseLandmark.RIGHT_HIP.value]
             
-            # Calculate metrics
             elbow_angle = self.calculate_angle_3d(right_shoulder, right_elbow, right_wrist)
             shoulder_abduction = self.calculate_shoulder_abduction_improved(right_shoulder, right_elbow, right_hip)
             wrist_height = right_wrist.y
             
-            # Calculate wrist velocity
             wrist_velocity = 0
             if self.prev_wrist_y is not None:
                 wrist_velocity = abs(self.prev_wrist_y - right_wrist.y) * 30
             self.prev_wrist_y = right_wrist.y
             
-            # Store frame data
             frame_data = {
                 'frame': self.frame_count,
                 'elbow_angle': elbow_angle,
@@ -76,7 +72,6 @@ class AnalysisEngine(QObject):
             }
             self.all_frame_data.append(frame_data)
             
-            # Update state machine
             self.update_phase(elbow_angle, shoulder_abduction, wrist_height, wrist_velocity)
             
             if self.frame_count % 5 == 0:
@@ -98,12 +93,12 @@ class AnalysisEngine(QObject):
                 print(f"    Wrist height: {wrist_height:.3f}, Shoulder: {shoulder_abduction:.1f}°")
         
         elif self.current_phase == ServePhase.ARM_COCKING:
-            # Track the minimum elbow angle (maximum cocking)
+            # Track the min elbow angle (maximum cocking)
             if elbow_angle < self.min_elbow_angle:
                 self.min_elbow_angle = elbow_angle
                 self.min_elbow_frame = self.frame_count
             
-            # Track maximum arm height
+            # Track max arm height
             if wrist_height < self.max_arm_height:
                 self.max_arm_height = wrist_height
             
@@ -129,7 +124,7 @@ class AnalysisEngine(QObject):
             # Contact happens when velocity starts decreasing after peak
             if (wrist_velocity < self.max_wrist_velocity * 0.6 and 
                 self.max_wrist_velocity > 0.3 and
-                self.frame_count > self.contact_frame + 3):  # Wait a few frames
+                self.frame_count > self.contact_frame + 3):  
                 
                 self.phase_metrics[ServePhase.BALL_CONTACT] = {
                     'frame': self.contact_frame,
@@ -142,7 +137,6 @@ class AnalysisEngine(QObject):
                 print(f"    Max velocity: {self.max_wrist_velocity:.3f}, Shoulder: {shoulder_abduction:.1f}°")
         
         elif self.current_phase == ServePhase.BALL_CONTACT:
-            # Move to follow-through immediately
             self.current_phase = ServePhase.FOLLOW_THROUGH
             print(f">>> Transitioned to FOLLOW_THROUGH at frame {self.frame_count}")
     
@@ -165,14 +159,12 @@ class AnalysisEngine(QObject):
         # Create vertical reference (straight up)
         vertical = np.array([0, -1, 0])  # Negative y is up
         
-        # Upper arm vector
         arm_vector = np.array([
             elbow.x - shoulder.x,
             elbow.y - shoulder.y,
             elbow.z - shoulder.z
         ])
         
-        # Calculate angle from vertical
         cosine_angle = np.dot(vertical, arm_vector) / np.linalg.norm(arm_vector)
         angle = np.arccos(np.clip(cosine_angle, -1.0, 1.0))
         
@@ -184,6 +176,22 @@ class AnalysisEngine(QObject):
         feedback = self.generate_feedback()
         self.analysis_complete.emit(feedback)
     
+    def export_frame_data(self):    
+        return {
+              'total_frames': self.frame_count,
+            'phases': {
+                'trophy_pose': self.phase_metrics[ServePhase.ARM_COCKING],
+                'ball_contact': self.phase_metrics[ServePhase.BALL_CONTACT],
+            },
+            'all_frames': self.all_frame_data,
+            'summary_stats': {
+                'min_elbow_angle': self.min_elbow_angle,
+                'min_elbow_frame': self.min_elbow_frame,
+                'max_wrist_velocity': self.max_wrist_velocity,
+                'contact_frame': self.contact_frame,
+            }
+        }
+
     def generate_feedback(self):
         """Generate detailed feedback based on detected phases"""
         feedback = {
@@ -192,7 +200,7 @@ class AnalysisEngine(QObject):
             'recommendations': []
         }
         
-        # Trophy Pose Analysis
+        # Trophy Pose 
         if self.phase_metrics[ServePhase.ARM_COCKING]:
             trophy = self.phase_metrics[ServePhase.ARM_COCKING]
             elbow_angle = trophy['elbow_flexion']
@@ -214,7 +222,6 @@ class AnalysisEngine(QObject):
             else:
                 feedback['phases_detected'].append("✓ Good trophy pose elbow angle")
         
-        # Ball Contact Analysis
         if self.phase_metrics[ServePhase.BALL_CONTACT]:
             contact = self.phase_metrics[ServePhase.BALL_CONTACT]
             shoulder_angle = contact['shoulder_abduction']
@@ -236,7 +243,6 @@ class AnalysisEngine(QObject):
                     'advice': f"Your elbow was at {elbow_ext:.1f}° at contact (target: 170-180°). Fully extend your arm for maximum reach and power."
                 })
         
-        # Overall form assessment
         if not feedback['recommendations']:
             feedback['recommendations'].append({
                 'title': 'Excellent Form!',

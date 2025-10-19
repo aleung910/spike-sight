@@ -15,7 +15,6 @@ class VideoProcessor(QThread):
         self.video_path = video_path
 
     def run(self):
-        # --- Initialization moved outside the loop for efficiency ---
         mp_pose = mp.solutions.pose
         pose = mp_pose.Pose(
             static_image_mode=False,
@@ -56,6 +55,5 @@ class VideoProcessor(QThread):
         self.processing_finished.emit()
 
     def stop(self):
-        """Sets run flag to False and waits for the thread to finish."""
         self._run_flag = False
         self.wait()
