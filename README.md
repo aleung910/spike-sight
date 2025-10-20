@@ -7,19 +7,7 @@ SpikeSight is a desktop GUI tool built with Python that acts as a digital volley
 The application deconstructs the complex motion of a volleyball serve into understandable metrics and actionable advice, helping players identify areas for improvement in their form, power, and consistency.
 
 ---
-
-## ✨ Features
-
-- **🎥 Real-Time Pose Detection**: Uses MediaPipe to track 33 body landmarks frame-by-frame
-- **📊 Biomechanical Analysis**: Measures elbow angles, shoulder abduction, wrist velocity, and contact height
-- **🔄 Phase Detection**: Automatically identifies serve phases (Stance → Trophy Pose → Acceleration → Contact → Follow-Through)
-- **🤖 AI Coaching**: OpenAI GPT-4o analyzes your technique and provides personalized feedback
-- **📈 Detailed Metrics**: Frame-by-frame data export for advanced analysis
-
----
-
 ## 📁 Project Structure
-
 ```
 spikesight/
 ├── main.py                      # Application entry point and GUI controller
@@ -33,9 +21,14 @@ spikesight/
 ├── vision/
     ├── __init__.py
     └── video_processor.py       # QThread worker for video & pose detection
-
 ```
 ---
+## Features
+- **Real-Time Pose Detection**: Uses MediaPipe to track 33 body landmarks frame-by-frame
+- **Biomechanical Analysis**: Measures elbow angles, shoulder abduction, wrist velocity, and contact height
+- **Phase Detection**: Automatically identifies serve phases (Stance → Trophy Pose → Acceleration → Contact → Follow-Through)
+- **AI Coaching**: OpenAI GPT-4o analyzes your technique and provides personalized feedback
+- **Detailed Metrics**: Frame-by-frame data export for advanced analysis
 
 ## 🚀 Installation
 
@@ -157,6 +150,8 @@ openai==1.12.0
 python-dotenv==1.0.0
 ```
 ---
+
+
 
 ## 📄 License
 
