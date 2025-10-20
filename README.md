@@ -100,10 +100,8 @@ python main.py
    - Automated biomechanical feedback
    - AI-powered coaching recommendations
 ```
-
 ---
-
-## 🛠️ Technical Details
+## Technical Details
 
 ### How It Works
 
@@ -150,18 +148,14 @@ openai==1.12.0
 python-dotenv==1.0.0
 ```
 ---
-
-
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - **MediaPipe** by Google for pose detection technology
 - **OpenAI** for GPT-4o API
 - Volleyball coaching research and biomechanics literature
+---
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
 ---
