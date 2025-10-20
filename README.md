@@ -6,8 +6,10 @@ SpikeSight is a desktop GUI tool built with Python that acts as a digital volley
 
 The application deconstructs the complex motion of a volleyball serve into understandable metrics and actionable advice, helping players identify areas for improvement in their form, power, and consistency.
 
+![gif](https://github.com/user-attachments/assets/248f0159-b2af-4cc0-abe0-c683205d7e1e)
+
 ---
-## 📁 Project Structure
+## 📁 Project Structure    
 ```
 spikesight/
 ├── main.py                      # Application entry point and GUI controller
