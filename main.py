@@ -155,8 +155,8 @@ class MainWindow(QMainWindow):
         if feedback_dict.get('recommendations'):
             html += "<div style='margin-top: 10px;'>"
             for rec in feedback_dict['recommendations']:
-                html += f"<div style='background-color: #3a3a3a; padding: 8px; margin: 5px 0; border-left: 3px solid #ff9800; border-radius: 3px;'>"
-                html += f"<b style='color: #ffa726;'>{rec['title']}</b><br>"
+                html += f"<div style='padding: 8px; margin: 5px 0; border-left: 3px solid #ff9800; border-radius: 3px;'>"
+                html += f"<b style='color: #ffc876;'>{rec['title']}</b><br>"
                 html += f"<span style='font-size: 12px; color: #ccc;'>{rec['advice']}</span>"
                 html += "</div>"
             html += "</div>"
@@ -165,8 +165,8 @@ class MainWindow(QMainWindow):
         
         if ai_feedback:
             html += "<hr style='border: 1px solid #444; margin: 15px 0;'>"
-            html += "<h3 style='color: #66bb6a; margin: 10px 0;'>🤖 AI Coach Analysis</h3>"
-            html += f"<div style='background-color: #2a2a2a; padding: 12px; border-radius: 5px; line-height: 1.6;'>"
+            html += "<h3 style='color: #66bb6a; margin: 10px 0;'>AI Coach Analysis</h3>"
+            html += f"<div style='padding: 12px; border-radius: 5px; line-height: 1.6;'>"
             formatted_ai = ai_feedback.replace('\n', '<br>')
             html += f"<span style='color: #ddd; font-size: 13px;'>{formatted_ai}</span>"
             html += "</div>"

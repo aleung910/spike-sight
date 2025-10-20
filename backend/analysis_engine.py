@@ -193,7 +193,7 @@ class AnalysisEngine(QObject):
         }
 
     def generate_feedback(self):
-        """Generate detailed feedback based on detected phases"""
+        """Generate detailed feedback based on the detected phases"""
         feedback = {
             'title': 'Serve Analysis Complete',
             'phases_detected': [],
@@ -211,12 +211,12 @@ class AnalysisEngine(QObject):
             
             if elbow_angle < 80:
                 feedback['recommendations'].append({
-                    'title': 'Elbow Too Bent in Trophy Pose',
+                    'title': 'Elbow is too Bent in Trophy Pose',
                     'advice': f"Your elbow was at {elbow_angle:.1f}° (target: 90-110°). This reduces your power arc. Form a 'bow and arrow' shape with your arm more extended."
                 })
             elif elbow_angle > 130:
                 feedback['recommendations'].append({
-                    'title': 'Elbow Too Straight in Trophy Pose',
+                    'title': 'Elbow is too Straight in Trophy Pose',
                     'advice': f"Your elbow was at {elbow_angle:.1f}° (target: 90-110°). Bend your elbow more to create a powerful cocking position."
                 })
             else:

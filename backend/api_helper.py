@@ -8,9 +8,18 @@ from dotenv import load_dotenv
 load_dotenv()
 
 def analyze_with_openai(feedback_data: Dict) -> Dict:
+    """
+    Send analysis data directly to OpenAI for AI coaching feedback
+    
+    Args:
+        feedback_data: The feedback dict from AnalysisEngine with frame_data
+        
+    Returns:
+        Enhanced feedback with AI insights
+    """
     api_key = os.getenv('OPENAI_API_KEY')
     if not api_key:
-        print("No OpenAI API key found")
+        print("No OpenAI API key found in environment variables")
         feedback_data['ai_enabled'] = False
         return feedback_data
     
@@ -46,7 +55,9 @@ def analyze_with_openai(feedback_data: Dict) -> Dict:
         return feedback_data
 
 
-def build_analysis_prompt(feedback_data: Dict) -> str:    
+def build_analysis_prompt(feedback_data: Dict) -> str:
+    """Build detailed prompt with all biomechanical data"""
+    
     frame_data = feedback_data.get('frame_data', {})
     phases = frame_data.get('phases', {})
     summary = frame_data.get('summary_stats', {})
