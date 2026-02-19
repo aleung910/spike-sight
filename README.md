@@ -1,6 +1,6 @@
-# 🏐 SpikeSight
+#SpikeSight
 
-**Your AI-Powered Volleyball Serve Coach**
+**An Volleyball Serve Analyst**
 
 SpikeSight is a desktop GUI tool built with Python that acts as a digital volleyball coach. By uploading a video of a serve, athletes receive real-time skeletal tracking, detailed biomechanical analysis, and AI-powered feedback to improve their technique.
 
